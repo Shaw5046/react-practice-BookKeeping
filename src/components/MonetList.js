@@ -4,7 +4,7 @@ import Record from "./Record";
 import Loader from "./Loader";
 
 export default function MonetList({ records, loading }) {
-  console.log(records);
+
   return (
     <>
       {loading && <Loader />}

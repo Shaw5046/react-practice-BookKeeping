@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 
-export default function Panel() {
+export default function Panel({totalC, totalD}) {
   return (
     <Row>
       <Col md={4}>
@@ -12,7 +12,7 @@ export default function Panel() {
         >
           <Card.Header>Credit</Card.Header>
           <Card.Body>
-            <Card.Text>111</Card.Text>
+            <Card.Text>{totalC}</Card.Text>
           </Card.Body>
         </Card>
       </Col>
@@ -25,7 +25,7 @@ export default function Panel() {
         >
           <Card.Header>Debit</Card.Header>
           <Card.Body>
-            <Card.Text>111</Card.Text>
+            <Card.Text>{totalD}</Card.Text>
           </Card.Body>
         </Card>
       </Col>
@@ -38,7 +38,7 @@ export default function Panel() {
         >
           <Card.Header>Balance</Card.Header>
           <Card.Body>
-            <Card.Text>111</Card.Text>
+            <Card.Text>{totalC-totalD}</Card.Text>
           </Card.Body>
         </Card>
       </Col>

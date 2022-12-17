@@ -9,7 +9,7 @@ import {
   onSnapshot,
   where,
   doc,
-  orderBy
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -18,30 +18,59 @@ function HomeScreen() {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [totalC, setTotalC] = useState(0);
+  const [totalD, setTotalD] = useState(0);
+
   useEffect(() => {
     async function fetchData() {
       if (currentUser) {
         try {
-          const q = query(collection(db, "records"), where('user', "==", doc(db, "user", currentUser.uid)), orderBy("date", "desc"));
+          const q = query(
+            collection(db, "records"),
+            where("user", "==", doc(db, "user", currentUser.uid)),
+            orderBy("date", "desc")
+          );
+
+          const creditRecords = [];
+          const debitRecords = [];
           //  , where('user', "==", doc(db, "users", currentUser.uid))
           return onSnapshot(q, (querySnapshot) => {
             let data = [];
             querySnapshot.forEach((doc) => {
-              data.push({ id: doc.id, ...doc.data() });
+              let recordObj = { id: doc.id, ...doc.data() };
+              data.push(recordObj);
+
+              if (recordObj.type === "Credit") {
+                creditRecords.push(recordObj.amount);
+              } else {
+                debitRecords.push(recordObj.amount);
+              }
             });
             setRecords(data);
             setLoading(false);
+
+            let totC = 0; 
+            creditRecords.forEach(element => {
+              totC+=parseFloat(element)
+            });
+            setTotalC(totC);
+
+            let totD = 0; 
+            debitRecords.forEach(element => {
+              totD+=parseFloat(element)
+            });
+            setTotalD(totD);
           });
         } catch (e) {}
       }
     }
     fetchData();
-  }, [currentUser]);
+  }, [currentUser,totalC,totalD]);
 
   if (currentUser) {
     return (
       <div>
-        <Panel />
+        <Panel totalC={totalC} totalD={totalD} />
         <hr />
         <MoneyForm />
         <MonetList loading={loading} records={records} />

@@ -15,12 +15,12 @@ export default function MoneyForm() {
 
   const { currentUser } = useAuth();
 
-  console.log(currentUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (type === "") {
+      console.log('type needed')
       return;
     }
 
@@ -32,10 +32,10 @@ export default function MoneyForm() {
         type,
         user: doc(db, "user", currentUser.uid),
       });
-
       setTitle('')
       setAmount('')
       setDate('')
+      console.log('add record successfully')
     } catch (e) {
       console.log(e);
     }
