@@ -1,0 +1,129 @@
+diff --git a/diff.txt b/diff.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/App.js b/src/App.js
+index ca478f4..a7f3335 100644
+--- a/src/App.js
++++ b/src/App.js
+@@ -4,14 +4,16 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+ import HomeScreen from "./pages/HomeScreen";
+ import Header from "./components/Header";
+ import { Container } from "react-bootstrap";
++import SignUpScreen from "./pages/SignUpScreen";
+ 
+ function App() {
+   return (
+     <Router>
+       <Header />
+-      <Container>
++      <Container className="mt-3">
+         <Switch>
+           <Route path="/" component={HomeScreen} exact />
++          <Route path="/signup" component={SignUpScreen} exact />
+         </Switch>
+       </Container>
+     </Router>
+diff --git a/src/components/Header.js b/src/components/Header.js
+index 75dd6b1..9ee309e 100644
+--- a/src/components/Header.js
++++ b/src/components/Header.js
+@@ -1,4 +1,4 @@
+-import React from "react";
++import React, { useState } from "react";
+ import { Navbar, Container, NavDropdown, Nav, Image } from "react-bootstrap";
+ import logo from "../logo.svg";
+ import { LinkContainer } from "react-router-bootstrap";
+@@ -14,9 +14,8 @@ function Header() {
+         </LinkContainer>
+         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+         <Navbar.Collapse id="basic-navbar-nav">
+-          <Nav className="me-auto">
+-            <Nav.Link href="#home">Home</Nav.Link>
+-            <Nav.Link href="#link">Link</Nav.Link>
++          <Nav className="me-auto"></Nav>
++          <Nav>
+             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+               <NavDropdown.Item href="#action/3.2">
+@@ -28,6 +27,14 @@ function Header() {
+                 Separated link
+               </NavDropdown.Item>
+             </NavDropdown>
++            <>
++              <LinkContainer to="/login">
++                <Nav.Link>Login</Nav.Link>
++              </LinkContainer>
++              <LinkContainer to="/signup">
++                <Nav.Link>Sign Up</Nav.Link>
++              </LinkContainer>
++            </>
+           </Nav>
+         </Navbar.Collapse>
+       </Container>
+diff --git a/src/pages/SignUpScreen.js b/src/pages/SignUpScreen.js
+new file mode 100644
+index 0000000..562856c
+--- /dev/null
++++ b/src/pages/SignUpScreen.js
+@@ -0,0 +1,61 @@
++import React, { useState } from "react";
++import { Form, Button, Alert } from "react-bootstrap";
++
++function SignUpScreen() {
++  const [email, setEmail] = useState("");
++  const [password, setPassword] = useState("");
++  const [confirmPassword, setConfirmPassword] = useState("");
++  const [error, setError] = useState(null);
++
++  const handleSubmit = (event) => {
++    event.preventDefault();
++
++    if (password !== confirmPassword) {
++      setError("Password do not match");
++      return;
++    }
++  };
++
++  return (
++    <>
++      <h1 className="fs-4">Sign Up</h1>
++      {error && <Alert variant="danger">{error}</Alert>}
++      <Form onSubmit={handleSubmit}>
++        <Form.Group className="mb-3">
++          <Form.Label>Email</Form.Label>
++          <Form.Control
++            value={email}
++            onChange={(event) => setEmail(event.target.value)}
++            type="email"
++            placeholder="Enter email"
++          />
++        </Form.Group>
++
++        <Form.Group className="mb-3">
++          <Form.Label>Password</Form.Label>
++          <Form.Control
++            value={password}
++            onChange={(event) => setPassword(event.target.value)}
++            type="password"
++            placeholder="Password"
++          />
++        </Form.Group>
++
++        <Form.Group className="mb-3">
++          <Form.Label>Confirm Password</Form.Label>
++          <Form.Control
++            value={confirmPassword}
++            onChange={(event) => setConfirmPassword(event.target.value)}
++            type="password"
++            placeholder="Confirm Password"
++          />
++        </Form.Group>
++        <Button variant="primary" type="submit">
++          Submit
++        </Button>
++      </Form>
++    </>
++  );
++}
++
++export default SignUpScreen;
