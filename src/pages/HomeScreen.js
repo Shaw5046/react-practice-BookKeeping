@@ -12,6 +12,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import Welcome from "../components/Welcome";
 
 function HomeScreen() {
   const { currentUser } = useAuth();
@@ -73,11 +74,12 @@ function HomeScreen() {
         <Panel totalC={totalC} totalD={totalD} />
         <hr />
         <MoneyForm />
+        <hr/>
         <MonetList loading={loading} records={records} />
       </div>
     );
   } else {
-    return <h2>You must log in</h2>;
+    return <Welcome />;
   }
 }
 
