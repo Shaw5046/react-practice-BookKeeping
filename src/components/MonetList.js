@@ -15,6 +15,7 @@ export default function MonetList({ records, loading }) {
             <th>Title</th>
             <th>Date</th>
             <th>Amount</th>
+            <th>Operation</th>
           </tr>
         </thead>
         <tbody>
